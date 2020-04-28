@@ -5,12 +5,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class TaigaApiService {
   constructor(private http: HttpClient) {}
 
-  getTasksList(projectId?: number, statusId?: number, assignedUserId?: number) {
+  getTasksList(projectId?: number, statusId?: number, assignedUserId?: number, createdByUserId?: number) {
     const url = 'https://api.taiga.io/api/v1/tasks';
     let params = new HttpParams().append('page_size', '200');
     if (projectId) { params = params.append('project', projectId.toString()); }
     if (statusId) { params = params.append('status', statusId.toString()); }
     if (assignedUserId) { params = params.append('assigned_to', assignedUserId.toString()); }
+    if (createdByUserId) { params = params.append('owner', createdByUserId.toString()); }
     return this.http.get(url, { params });
   }
 

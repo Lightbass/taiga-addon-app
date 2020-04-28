@@ -13,7 +13,8 @@ export class TaskListComponent implements OnInit {
   filterInfo: any;
 
   statusId: number;
-  userId: number;
+  assignedUserId: number;
+  createdByUserId: number;
 
   constructor(private apiService: TaigaApiService,
               private route: ActivatedRoute) { }
@@ -24,11 +25,17 @@ export class TaskListComponent implements OnInit {
   }
 
   makeRequest() {
-    this.apiService.getTasksList(this.route.snapshot.params.id, this.statusId, this.userId).subscribe((res: any[]) => this.tasks = res);
+    this.apiService.getTasksList(this.route.snapshot.params.id, this.statusId, this.assignedUserId, this.createdByUserId)
+      .subscribe((res: any[]) => this.tasks = res);
   }
 
-  selectUser(event) {
-    this.userId = event.target.value;
+  selectAssignedUser(event) {
+    this.assignedUserId = event.target.value;
+    this.makeRequest();
+  }
+
+  selectCreatedByUser(event) {
+    this.createdByUserId = event.target.value;
     this.makeRequest();
   }
 

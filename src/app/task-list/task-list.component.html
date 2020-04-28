@@ -1,7 +1,12 @@
-<p>TAST LIST</p>
+<p>TASKS LIST</p>
 <div *ngIf="filterInfo">
-  Assigned
-  <select id="users" name="users" [value]="null" (change)="selectUser($event)">
+  Assigned user
+  <select id="users1" name="users1" [value]="null" (change)="selectAssignedUser($event)">
+    <option *ngFor="let user of filterInfo.assigned_to" [value]="user.id">{{ user.full_name }}</option>
+  </select>
+  <br/>
+  Created by
+  <select id="users2" name="users2" [value]="null" (change)="selectCreatedByUser($event)">
     <option *ngFor="let user of filterInfo.assigned_to" [value]="user.id">{{ user.full_name }}</option>
   </select>
   <br/>
@@ -12,9 +17,10 @@
             (select)="selectUser($event)">{{ status.name }}</option>
   </select>
 </div>
-<div *ngFor="let task of tasks">
+<div *ngFor="let task of tasks" style="font-size: 30px">
+  <span style="color: red; padding-right: 20px">{{ task.status_extra_info.name }}</span>
   <a [href]="'https://tree.taiga.io/project/' + route.snapshot.params.slug + '/task/' + task.ref"
      target="_blank">
-    {{task.ref}} - {{task.status_extra_info.name}} - {{task.subject}}
+    {{task.ref}} - {{task.subject.length > 100 ? task.subject.substring(0, 100) + '...' : task.subject }}
   </a>
 </div>

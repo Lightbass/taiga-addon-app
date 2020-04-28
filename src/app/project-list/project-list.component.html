@@ -1,3 +1,4 @@
+<p>PROJECTS LIST</p>
 <div *ngFor="let project of projects">
   <a [routerLink]="['/', 'tasks', project.slug, project.id]">
     Project {{project.name}}
