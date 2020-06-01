@@ -22,7 +22,8 @@ import { ProjectListComponent } from './project-list/project-list.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     TaigaApiService,

@@ -16,17 +16,28 @@ export class TaskListComponent implements OnInit {
   assignedUserId: number;
   createdByUserId: number;
 
+  isIssuesList = false;
+
   constructor(private apiService: TaigaApiService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.apiService.filterInfo(this.route.snapshot.params.id).subscribe(res => this.filterInfo = res);
+    this.getFilters();
     this.makeRequest();
   }
 
+  getFilters() {
+    this.apiService.filterInfo(this.route.snapshot.params.id, this.isIssuesList).subscribe(res => this.filterInfo = res);
+  }
+
   makeRequest() {
-    this.apiService.getTasksList(this.route.snapshot.params.id, this.statusId, this.assignedUserId, this.createdByUserId)
-      .subscribe((res: any[]) => this.tasks = res);
+    if (this.isIssuesList) {
+      this.apiService.getIssuesList(this.route.snapshot.params.id, this.statusId, this.assignedUserId, this.createdByUserId)
+        .subscribe((res: any[]) => this.tasks = res);
+    } else {
+      this.apiService.getTasksList(this.route.snapshot.params.id, this.statusId, this.assignedUserId, this.createdByUserId)
+        .subscribe((res: any[]) => this.tasks = res);
+    }
   }
 
   selectAssignedUser(event) {
@@ -44,4 +55,28 @@ export class TaskListComponent implements OnInit {
     this.makeRequest();
   }
 
+  changeStatusForItem(event, task) {
+    this.apiService.changeStatus(task.id, task.version, +event.target.value, this.isIssuesList).subscribe((res: any) => {
+      task.status = res.status;
+      task.version = res.version;
+    });
+  }
+
+  changeListType() {
+    this.isIssuesList = !this.isIssuesList;
+    this.getFilters();
+    this.clearFilters();
+    this.makeRequest();
+  }
+
+  clearFilters() {
+    this.statusId = undefined;
+    this.assignedUserId = undefined;
+    this.createdByUserId = undefined;
+  }
+
+  resetSearch() {
+    this.clearFilters();
+    this.makeRequest();
+  }
 }

@@ -1,0 +1,31 @@
+.panel {
+  padding-bottom: 10px;
+  &-button {
+    margin-right: 10px;
+    &-reset {
+      margin-left: 100px;
+      background: indianred;
+    }
+  }
+}
+
+.item {
+  font-size: 30px;
+  margin-bottom: 10px;
+  &-select {
+    max-width: 200px;
+    height: 30px;
+    margin-right: 20px;
+    vertical-align: middle;
+  }
+  &-link {
+    padding-top: 5px;
+    vertical-align: bottom;
+  }
+}
+
+.error {
+  position: absolute;
+  left: 90vw;
+  top: 5vh;
+}

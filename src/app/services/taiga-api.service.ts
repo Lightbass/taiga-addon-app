@@ -15,6 +15,16 @@ export class TaigaApiService {
     return this.http.get(url, { params });
   }
 
+  getIssuesList(projectId?: number, statusId?: number, assignedUserId?: number, createdByUserId?: number) {
+    const url = 'https://api.taiga.io/api/v1/issues';
+    let params = new HttpParams().append('page_size', '200');
+    if (projectId) { params = params.append('project', projectId.toString()); }
+    if (statusId) { params = params.append('status', statusId.toString()); }
+    if (assignedUserId) { params = params.append('assigned_to', assignedUserId.toString()); }
+    if (createdByUserId) { params = params.append('owner', createdByUserId.toString()); }
+    return this.http.get(url, { params });
+  }
+
   getProjectList(userId: string) {
     const url = 'https://api.taiga.io/api/v1/projects';
     let params = new HttpParams().append('member', userId);
@@ -29,9 +39,15 @@ export class TaigaApiService {
     return this.http.post(url, { username, password, type });
   }
 
-  filterInfo(projectId: string) {
-    const url = 'https://api.taiga.io/api/v1/tasks/filters_data';
+  filterInfo(projectId: string, isIssues?: boolean) {
+    const url = `https://api.taiga.io/api/v1/${isIssues ? 'issues' : 'tasks'}/filters_data`;
     const params = new HttpParams().append('project', projectId);
     return this.http.get(url, { params });
+  }
+
+  changeStatus(itemId: number, version: number, status: number, isIssues?: boolean) {
+    const url = `https://api.taiga.io/api/v1/${isIssues ? 'issues' : 'tasks'}/${itemId}`;
+    const sampleObj = { status, version };
+    return this.http.patch(url, sampleObj);
   }
 }

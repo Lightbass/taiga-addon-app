@@ -1,26 +1,45 @@
 <p>TASKS LIST</p>
+<div class="panel">
+  <button class="panel-button"
+          [disabled]="!isIssuesList"
+          (click)="changeListType()">SUBTASKS</button>
+  <button class="panel-button"
+          [disabled]="isIssuesList"
+          (click)="changeListType()">ISSUES</button>
+  <button class="panel-button-reset"
+          (click)="resetSearch()">Reset filters</button>
+</div>
 <div *ngIf="filterInfo">
   Assigned user
-  <select id="users1" name="users1" [value]="null" (change)="selectAssignedUser($event)">
+  <select id="users1" name="users1" [(ngModel)]="assignedUserId" (change)="selectAssignedUser($event)">
     <option *ngFor="let user of filterInfo.assigned_to" [value]="user.id">{{ user.full_name }}</option>
   </select>
   <br/>
   Created by
-  <select id="users2" name="users2" [value]="null" (change)="selectCreatedByUser($event)">
+  <select id="users2" name="users2" [(ngModel)]="createdByUserId" (change)="selectCreatedByUser($event)">
     <option *ngFor="let user of filterInfo.assigned_to" [value]="user.id">{{ user.full_name }}</option>
   </select>
   <br/>
   Status
-  <select id="status" name="status" [value]="null" (change)="selectStatus($event)">
+  <select id="status" name="status" [(ngModel)]="statusId" (change)="selectStatus($event)">
     <option *ngFor="let status of filterInfo.statuses"
             [value]="status.id"
             (select)="selectUser($event)">{{ status.name }}</option>
   </select>
 </div>
-<div *ngFor="let task of tasks" style="font-size: 30px">
-  <span style="color: red; padding-right: 20px">{{ task.status_extra_info.name }}</span>
-  <a [href]="'https://tree.taiga.io/project/' + route.snapshot.params.slug + '/task/' + task.ref"
+<div *ngFor="let task of tasks" class="item">
+<!--  <span style="color: red; padding-right: 20px">{{ task.status_extra_info.name }}</span>-->
+  <select class="item-select"
+          id="item-{{task.id}}"
+          name="item-{{task.id}}"
+          [(ngModel)]="task.status"
+          (change)="changeStatusForItem($event, task)">
+    <option *ngFor="let status of filterInfo?.statuses" [value]="status.id">{{ status.name }}</option>
+  </select>
+  <a class="item-link"
+     [href]="'https://tree.taiga.io/project/' + route.snapshot.params.slug + (isIssuesList ? '/issue/' : '/task/') + task.ref"
      target="_blank">
     {{task.ref}} - {{task.subject.length > 100 ? task.subject.substring(0, 100) + '...' : task.subject }}
   </a>
 </div>
+<!--<div class="error">Error</div>-->
