@@ -23,8 +23,7 @@
   Status
   <select id="status" name="status" [(ngModel)]="statusId" (change)="selectStatus($event)">
     <option *ngFor="let status of filterInfo.statuses"
-            [value]="status.id"
-            (select)="selectUser($event)">{{ status.name }}</option>
+            [value]="status.id">{{ status.name }}</option>
   </select>
 </div>
 <div *ngFor="let task of tasks" class="item">

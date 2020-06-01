@@ -19,7 +19,7 @@ export class TaskListComponent implements OnInit {
   isIssuesList = false;
 
   constructor(private apiService: TaigaApiService,
-              private route: ActivatedRoute) { }
+              public route: ActivatedRoute) { }
 
   ngOnInit() {
     this.getFilters();
