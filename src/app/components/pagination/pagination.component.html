@@ -1,0 +1,5 @@
+<button (click)="clickPage(1)">First</button>
+<button (click)="clickPage(currentPage - 1)">Previous</button>
+<button disabled>{{ currentPage }}</button>
+<button (click)="clickPage(currentPage + 1)">Next</button>
+<button (click)="clickPage(math.ceil(count / pageSize))">Last</button>

@@ -41,4 +41,10 @@
     {{task.ref}} - {{task.subject.length > 100 ? task.subject.substring(0, 100) + '...' : task.subject }}
   </a>
 </div>
+<app-pagination *ngIf="tasks?.length"
+                [pageSize]="pageSize"
+                [currentPage]="currentPage"
+                [count]="countElements"
+                (selectPage)="makeRequest($event)"
+></app-pagination>
 <!--<div class="error">Error</div>-->

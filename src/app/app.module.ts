@@ -10,13 +10,15 @@ import { TaskListComponent } from './task-list/task-list.component';
 import { ApiInterseptorService } from './services/api-interceptor.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ProjectListComponent } from './project-list/project-list.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     TaskListComponent,
-    ProjectListComponent
+    ProjectListComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

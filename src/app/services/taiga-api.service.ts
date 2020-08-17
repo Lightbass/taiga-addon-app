@@ -1,28 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 export class TaigaApiService {
   constructor(private http: HttpClient) {}
 
-  getTasksList(projectId?: number, statusId?: number, assignedUserId?: number, createdByUserId?: number) {
+  getTasksList(pageSize: number, page: number = 1, projectId?: number, statusId?: number, assignedUserId?: number,
+               createdByUserId?: number) {
     const url = 'https://api.taiga.io/api/v1/tasks';
-    let params = new HttpParams().append('page_size', '200');
+    let params = new HttpParams().append('page_size', pageSize.toString()).append('page', page.toString());
     if (projectId) { params = params.append('project', projectId.toString()); }
     if (statusId) { params = params.append('status', statusId.toString()); }
     if (assignedUserId) { params = params.append('assigned_to', assignedUserId.toString()); }
     if (createdByUserId) { params = params.append('owner', createdByUserId.toString()); }
-    return this.http.get(url, { params });
+    return this.http.get<any[]>(url, { params, observe: 'response' });
   }
 
-  getIssuesList(projectId?: number, statusId?: number, assignedUserId?: number, createdByUserId?: number) {
+  getIssuesList(pageSize: number, page: number = 1, projectId?: number, statusId?: number, assignedUserId?: number,
+                createdByUserId?: number) {
     const url = 'https://api.taiga.io/api/v1/issues';
-    let params = new HttpParams().append('page_size', '200');
+    let params = new HttpParams().append('page_size', pageSize.toString()).append('page', page.toString());
     if (projectId) { params = params.append('project', projectId.toString()); }
     if (statusId) { params = params.append('status', statusId.toString()); }
     if (assignedUserId) { params = params.append('assigned_to', assignedUserId.toString()); }
     if (createdByUserId) { params = params.append('owner', createdByUserId.toString()); }
-    return this.http.get(url, { params });
+    return this.http.get<any[]>(url, { params, observe: 'response' });
   }
 
   getProjectList(userId: string) {

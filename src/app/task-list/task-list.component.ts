@@ -18,6 +18,10 @@ export class TaskListComponent implements OnInit {
 
   isIssuesList = false;
 
+  currentPage: number;
+  countElements: number;
+  pageSize = 200;
+
   constructor(private apiService: TaigaApiService,
               public route: ActivatedRoute) { }
 
@@ -30,13 +34,23 @@ export class TaskListComponent implements OnInit {
     this.apiService.filterInfo(this.route.snapshot.params.id, this.isIssuesList).subscribe(res => this.filterInfo = res);
   }
 
-  makeRequest() {
+  makeRequest(page = 1) {
     if (this.isIssuesList) {
-      this.apiService.getIssuesList(this.route.snapshot.params.id, this.statusId, this.assignedUserId, this.createdByUserId)
-        .subscribe((res: any[]) => this.tasks = res);
+      this.apiService.getIssuesList(this.pageSize, page, this.route.snapshot.params.id, this.statusId, this.assignedUserId,
+        this.createdByUserId)
+        .subscribe((res) => {
+          this.countElements = +res.headers.get('x-pagination-count');
+          this.currentPage = +res.headers.get('x-pagination-current');
+          this.tasks = res.body;
+        });
     } else {
-      this.apiService.getTasksList(this.route.snapshot.params.id, this.statusId, this.assignedUserId, this.createdByUserId)
-        .subscribe((res: any[]) => this.tasks = res);
+      this.apiService.getTasksList(this.pageSize, page, this.route.snapshot.params.id, this.statusId, this.assignedUserId,
+        this.createdByUserId)
+        .subscribe((res) => {
+          this.countElements = +res.headers.get('x-pagination-count');
+          this.currentPage = +res.headers.get('x-pagination-current');
+          this.tasks = res.body;
+        });
     }
   }
 
